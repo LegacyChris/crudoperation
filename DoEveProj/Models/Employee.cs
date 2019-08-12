@@ -12,7 +12,7 @@ namespace DoEveProj.Models
     {
         [Key]
         public int EmployeeId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Please enter your full name")]
         [DisplayName(" Full Name")]
         [Column(TypeName = "nvarchar(250)")]
         public string FullName { get; set; }

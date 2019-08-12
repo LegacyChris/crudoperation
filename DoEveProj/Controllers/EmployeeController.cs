@@ -45,7 +45,10 @@ namespace DoEveProj.Controllers
         // GET: Employee/Create
         public IActionResult AddOrEdit(int id = 0)
         {
-            return View(new Employee());
+            if (id == 0)
+                return View(new Employee());
+            else
+                return View(_context.Employees.Find(id));
         }
 
         // POST: Employee/Create
@@ -53,11 +56,14 @@ namespace DoEveProj.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmployeeId,FullName,EmpCode,Department,Position,SiteLocation")] Employee employee)
+        public async Task<IActionResult> AddOrEdit([Bind("EmployeeId,FullName,EmpCode,Department,Position,SiteLocation")] Employee employee)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(employee);
+                if (employee.EmployeeId == 0)
+                    _context.Add(employee);
+                else
+                    _context.Update(employee);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
